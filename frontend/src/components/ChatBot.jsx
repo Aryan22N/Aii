@@ -21,19 +21,16 @@ function ChatBot() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/chatbot",
+        "/api/chatbot",
         { message: msg },
         { headers: { "Content-Type": "application/json" } }
       );
 
-      setChat((prev) => [
-        ...prev,
-        { from: "bot", text: res.data.reply }
-      ]);
+      setChat((prev) => [...prev, { from: "bot", text: res.data.reply }]);
     } catch {
       setChat((prev) => [
         ...prev,
-        { from: "bot", text: "Sorry, something went wrong." }
+        { from: "bot", text: "Sorry, something went wrong." },
       ]);
     }
   };
@@ -51,7 +48,6 @@ function ChatBot() {
       {/* Chat Window */}
       {open && (
         <div className="fixed bottom-20 right-6 w-80 bg-black text-white rounded-xl shadow-xl flex flex-col z-50">
-
           {/* Header */}
           <div className="p-3 bg-purple-700 rounded-t-xl font-bold text-center">
             Study Assistant
@@ -68,9 +64,7 @@ function ChatBot() {
               >
                 <span
                   className={`px-3 py-2 rounded-lg text-sm max-w-[80%] ${
-                    c.from === "user"
-                      ? "bg-purple-600"
-                      : "bg-white/20"
+                    c.from === "user" ? "bg-purple-600" : "bg-white/20"
                   }`}
                 >
                   {c.text}
@@ -96,7 +90,6 @@ function ChatBot() {
               Send
             </button>
           </div>
-
         </div>
       )}
     </>
