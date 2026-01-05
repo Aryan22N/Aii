@@ -1,8 +1,8 @@
 // backend/routes/chatRoutes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { sendMessageToAI } = require('../controllers/chatController');
+const { sendMessageToAI } = require("../controllers/chatController");
 
-router.post('/', sendMessageToAI);
+router.post("/", sendMessageToAI);
 
 module.exports = router;

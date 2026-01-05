@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
-    createQuestionPaper,
-    downloadQuestionPaperPDF
-} = require('../controllers/questionPaperController');
+  createQuestionPaper,
+  downloadQuestionPaperPDF,
+} = require("../controllers/questionPaperController");
 
-router.post('/', createQuestionPaper);
-router.get('/download/:syllabusId', downloadQuestionPaperPDF);
+router.post("/", createQuestionPaper);
+router.get("/download/:syllabusId", downloadQuestionPaperPDF);
 
 module.exports = router;

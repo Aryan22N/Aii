@@ -9,15 +9,15 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
    1️⃣ Generate Question Paper
 ---------------------------------------------------*/
 export const generateQuestionPaper = async (req, res) => {
-    try {
-        const { syllabusId, difficulty = "medium", totalMarks = 70 } = req.body;
+  try {
+    const { syllabusId, difficulty = "medium", totalMarks = 70 } = req.body;
 
-        const syllabus = await Syllabus.findById(syllabusId);
-        if (!syllabus) {
-            return res.status(404).json({ message: "Syllabus not found" });
-        }
+    const syllabus = await Syllabus.findById(syllabusId);
+    if (!syllabus) {
+      return res.status(404).json({ message: "Syllabus not found" });
+    }
 
-        const prompt = `
+    const prompt = `
 You are an Indian college exam paper setter.
 
 Syllabus:
@@ -32,33 +32,32 @@ Ensure:
 - Exam-oriented Indian college format
 `;
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
 
-        res.status(200).json({
-            success: true,
-            questionPaper: text
-        });
-
-    } catch (error) {
-        console.error("Question Paper Error:", error);
-        res.status(500).json({ message: "Failed to generate question paper" });
-    }
+    res.status(200).json({
+      success: true,
+      questionPaper: text,
+    });
+  } catch (error) {
+    console.error("Question Paper Error:", error);
+    res.status(500).json({ message: "Failed to generate question paper" });
+  }
 };
 
 /* --------------------------------------------------
    2️⃣ Generate Study Plan
 ---------------------------------------------------*/
 export const generateStudyPlan = async (req, res) => {
-    try {
-        const { syllabusId, examDate, hoursPerDay } = req.body;
+  try {
+    const { syllabusId, examDate, hoursPerDay } = req.body;
 
-        const syllabus = await Syllabus.findById(syllabusId);
-        if (!syllabus) {
-            return res.status(404).json({ message: "Syllabus not found" });
-        }
+    const syllabus = await Syllabus.findById(syllabusId);
+    if (!syllabus) {
+      return res.status(404).json({ message: "Syllabus not found" });
+    }
 
-        const prompt = `
+    const prompt = `
 You are an AI study planner for Indian college students.
 
 Syllabus:
@@ -76,39 +75,38 @@ Ensure:
 - Simple, student-friendly format
 `;
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
 
-        res.status(200).json({
-            success: true,
-            studyPlan: text
-        });
-
-    } catch (error) {
-        console.error("Study Plan Error:", error);
-        res.status(500).json({ message: "Failed to generate study plan" });
-    }
+    res.status(200).json({
+      success: true,
+      studyPlan: text,
+    });
+  } catch (error) {
+    console.error("Study Plan Error:", error);
+    res.status(500).json({ message: "Failed to generate study plan" });
+  }
 };
 
 /* --------------------------------------------------
    3️⃣ AI Chatbot
 ---------------------------------------------------*/
 export const chatWithAI = async (req, res) => {
-    try {
-        const { message, syllabusId } = req.body;
+  try {
+    const { message, syllabusId } = req.body;
 
-        let syllabusText = "";
-        if (syllabusId) {
-            const syllabus = await Syllabus.findById(syllabusId);
-            if (syllabus) {
-                syllabusText = `
+    let syllabusText = "";
+    if (syllabusId) {
+      const syllabus = await Syllabus.findById(syllabusId);
+      if (syllabus) {
+        syllabusText = `
 Course: ${syllabus.courseName}
 Topics: ${syllabus.units.join(", ")}
 `;
-            }
-        }
+      }
+    }
 
-        const prompt = `
+    const prompt = `
 You are a smart AI study assistant for Indian college students.
 
 ${syllabusText}
@@ -119,16 +117,15 @@ Student question:
 Answer clearly, simply, and exam-oriented.
 `;
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
 
-        res.status(200).json({
-            success: true,
-            reply: text
-        });
-
-    } catch (error) {
-        console.error("Chatbot Error:", error);
-        res.status(500).json({ message: "AI assistant failed to respond" });
-    }
+    res.status(200).json({
+      success: true,
+      reply: text,
+    });
+  } catch (error) {
+    console.error("Chatbot Error:", error);
+    res.status(500).json({ message: "AI assistant failed to respond" });
+  }
 };

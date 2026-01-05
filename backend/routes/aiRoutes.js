@@ -1,8 +1,8 @@
 import express from "express";
 import {
-    generateQuestionPaper,
-    generateStudyPlan,
-    chatWithAI
+  generateQuestionPaper,
+  generateStudyPlan,
+  chatWithAI,
 } from "../controllers/aiController.js";
 
 const router = express.Router();

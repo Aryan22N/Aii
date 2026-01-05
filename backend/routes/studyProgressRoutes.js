@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { updateProgress } = require('../controllers/studyProgressController');
+const { updateProgress } = require("../controllers/studyProgressController");
 
-router.post('/', updateProgress);
+router.post("/", updateProgress);
 
 module.exports = router;

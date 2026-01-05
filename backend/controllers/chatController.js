@@ -1,34 +1,26 @@
-// backend/controllers/chatController.js
-const axios = require('axios');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// AI Chat endpoint
-const sendMessageToAI = async (req, res) => {
-    try {
-        const { message, context } = req.body; // context can include syllabus, plan, etc.
+const chat = async (req, res) => {
+  try {
+    const { message } = req.body;
 
-        // Construct Gemini prompt
-        const prompt = `
-You are a smart AI study assistant for Indian college students.
-Answer concisely and helpfully. Context: ${JSON.stringify(context)}
-Student asked: ${message}
-`;
-
-        const response = await axios.post('https://api.gemini.ai/v1/generate', {
-            prompt
-        }, {
-            headers: { 'Authorization': `Bearer ${GEMINI_API_KEY}` }
-        });
-
-        const reply = response.data?.text || 'Sorry, I could not generate a response.';
-
-        res.json({ success: true, reply });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, reply: 'Server Error' });
+    if (!message) {
+      return res.status(400).json({ reply: "Message is required" });
     }
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    const result = await model.generateContent(message);
+    const response = await result.response;
+    const reply = response.text();
+
+    res.json({ reply });
+  } catch (error) {
+    console.error("Gemini error:", error);
+    res.status(500).json({ reply: "Chatbot failed" });
+  }
 };
 
-module.exports = { sendMessageToAI };
+module.exports = { chat };
